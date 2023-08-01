@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+}
+body {
+  background-image: url("../images/bg2.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+#navbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+
+  background-color: black;
+  color: white;
+
+  height: 10vh;
+
+  font-family: "Lumanosimo", cursive;
+}
+#maintxt {
+  position: absolute;
+  top: 0;
+
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: -1;
+
+  font-size: 10vmin;
+
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+
+  font-family: "Indie Flower", cursive;
+  
+  animation-name: introanim;
+  animation-duration: 2s;
+}
+#cool {
+  font-family: "Lumanosimo", cursive;
+  color: wheat;
+}
+#lg {
+  position: relative;
+  left: 3%;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+@keyframes introanim {
+  0% {
+    opacity: 0%;
+  }
+  40% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
