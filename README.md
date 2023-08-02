@@ -1,2 +1,2 @@
 # LibraGo
-Same shit, different day.
+Library Management Server
