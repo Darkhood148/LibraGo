@@ -1,0 +1,9 @@
+CREATE DATABASE librago;
+USE librago;
+
+CREATE TABLE users (
+    username VARCHAR(255) NOT NULL PRIMARY KEY,
+    fullName VARCHAR(255) NOT NULL,
+    hash VARCHAR(255) NOT NULL,
+    isAdmin BOOLEAN DEFAULT FALSE
+);
