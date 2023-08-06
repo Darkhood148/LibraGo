@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LibraGo</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/profile.css" />
+  </head>
+  <body>
+    Hi Admin {{.Username}}
+    {{.CheckReqs.Reqs}}
+    <h1>Issued Books:</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Checkout-ID</th>
+          <th>Book Name</th>
+          <th>A1</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .CheckReqs.Reqs}}
+        <tr>
+          <td>{{.Checkoutid}}</td>
+          <td>{{.OfBook}}</td>
+          <td>
+            <form action="/returnbook" method="POST">
+              <button
+                class="column"
+                type="submit"
+                name="actionInfo"
+                value="{{.Checkoutid}}"
+              >
+                Return
+              </button>
+            </form>
+          </td>
+        </tr>
+
+        {{end}}
+      </tbody>
+    </table>
+    <h1>Checkins Denied: </h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Checkout-ID</th>
+          <th>Book Name</th>
+          <th>A1</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .DeniedReqs.Reqs}}
+        <tr>
+          <td>{{.Checkoutid}}</td>
+          <td>{{.OfBook}}</td>
+          <td>
+            <form action="/returndeniedbook" method="POST">
+              <button
+                class="column"
+                type="submit"
+                name="actionInfo"
+                value="{{.Checkoutid}}"
+              >
+                Return Again
+              </button>
+            </form>
+          </td>
+        </tr>
+
+        {{end}}
+      </tbody>
+    </table>
+  </body>
+</html>

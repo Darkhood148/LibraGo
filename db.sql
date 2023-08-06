@@ -7,3 +7,17 @@ CREATE TABLE users (
     hash VARCHAR(255) NOT NULL,
     isAdmin BOOLEAN DEFAULT FALSE
 );
+CREATE TABLE books (
+    bookid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    author VARCHAR(255),
+    copiesAvailable SMALLINT UNSIGNED
+);
+CREATE TABLE checkouts (
+    checkoutid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ofBook VARCHAR(255),
+    byUser VARCHAR(255),
+    status ENUM('pending', 'issued', 'checkinDenied', 'checkinPending'),
+    FOREIGN KEY (ofBook) REFERENCES books(bookid),
+    FOREIGN KEY (byUser) REFERENCES users(username)
+    );

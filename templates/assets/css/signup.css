@@ -27,3 +27,9 @@ body {
 .container {
     overflow: scroll;
 }
+@media screen and (orientation:portrait) { 
+  #box{
+    width: 100vw;
+    left: 0;
+  }
+}

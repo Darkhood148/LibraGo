@@ -4,7 +4,12 @@ import (
 	"html/template"
 )
 
-func ProfilePage() *template.Template {
-	temp := template.Must(template.ParseFiles("templates/profile.html"))
-	return temp
+func ProfilePage(admin bool) *template.Template {
+	if admin {
+		temp := template.Must(template.ParseFiles("templates/profileAdmin.html"))
+		return temp
+	} else {
+		temp := template.Must(template.ParseFiles("templates/profile.html"))
+		return temp
+	}
 }
