@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"mvc/pkg/middleware"
 	"mvc/pkg/models"
 	"mvc/pkg/types"
@@ -10,17 +9,22 @@ import (
 )
 
 func Profile(w http.ResponseWriter, r *http.Request) {
-	uname := middleware.VerifyJWT(w, r)
-	if uname != "" {
-		t := views.ProfilePage(middleware.VerifyAdmin(uname))
-		info := types.ProfileInfo{
-			Username:   uname,
-			CheckReqs:  models.FetchUserReqs(uname),
-			DeniedReqs: models.FetchDeniedReqs(uname),
+	if middleware.TypeOfUser(w, r) != "Unverified" {
+		uname := middleware.VerifyJWT(w, r)
+		denreq, err1 := models.FetchDeniedReqs(uname)
+		usereq, err2 := models.FetchUserReqs(uname)
+		if err1 != nil || err2 != nil {
+			w.Write([]byte("Error Occured"))
+		} else {
+			t := views.ProfilePage(middleware.VerifyAdmin(uname))
+			info := types.ProfileInfo{
+				Username:   uname,
+				CheckReqs:  usereq,
+				DeniedReqs: denreq,
+			}
+			t.Execute(w, info)
 		}
-		fmt.Println("info", info)
-		t.Execute(w, info)
 	} else {
-		w.Write([]byte("Login Please"))
+		w.Write([]byte("You need to be logged in to access this."))
 	}
 }

@@ -1,22 +1,20 @@
 package models
 
 import (
-	"fmt"
-
 	"mvc/pkg/types"
 )
 
-func FetchDeniedReqs(data string) types.CheckRequests {
+func FetchDeniedReqs(data string) (types.CheckRequests, error) {
 	db, err := Connection()
 	if err != nil {
-		fmt.Printf("error %s connecting to the database", err)
+		return types.CheckRequests{}, err
 	}
 	selectSql := "SELECT * FROM checkouts WHERE byUser = (?) AND status = \"checkinDenied\""
 	rows, err := db.Query(selectSql, data)
 	db.Close()
 
 	if err != nil {
-		fmt.Printf("error %s querying the database", err)
+		return types.CheckRequests{}, err
 	}
 
 	var fetchReqs []types.CheckRequest
@@ -24,13 +22,13 @@ func FetchDeniedReqs(data string) types.CheckRequests {
 		var req types.CheckRequest
 		err := rows.Scan(&req.Checkoutid, &req.OfBook, &req.ByUser, &req.Status)
 		if err != nil {
-			fmt.Printf("error %s scanning the row", err)
+			return types.CheckRequests{}, err
 		}
 		fetchReqs = append(fetchReqs, req)
 	}
 
 	var listReqs types.CheckRequests
 	listReqs.Reqs = fetchReqs
-	return listReqs
+	return listReqs, nil
 
 }

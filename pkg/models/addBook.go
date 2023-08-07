@@ -1,31 +1,29 @@
 package models
 
 import (
-	"fmt"
+	"errors"
 	"mvc/pkg/types"
 )
 
-func AddBook(data types.Book) {
+func AddBook(data types.Book) error {
 	db, err := Connection()
 	if err != nil {
-		fmt.Println("Error Occured")
+		return err
+	}
+	query := "SELECT * FROM books WHERE name=(?) AND author=(?)"
+	res, err := db.Query(query, data.Bookname, data.Author)
+	if err != nil {
+		return err
+	}
+	if res.Next() {
+		return errors.New("book already exists")
 	} else {
-		query := "SELECT * FROM books WHERE name=(?) AND author=(?)"
-		res, err := db.Query(query, data.Bookname, data.Author)
+		query := "INSERT INTO books (name, author, copiesAvailable) VALUES (?, ?, ?)"
+		_, err := db.Exec(query, data.Bookname, data.Author, data.Quantity)
 		if err != nil {
-			fmt.Println("Error Occured")
+			return err
 		} else {
-			if res.Next() {
-				fmt.Println("Book already exists")
-			} else {
-				query := "INSERT INTO books (name, author, copiesAvailable) VALUES (?, ?, ?)"
-				_, err := db.Exec(query, data.Bookname, data.Author, data.Quantity)
-				if err != nil {
-					fmt.Println("Error Occured")
-				} else {
-					fmt.Println("Successful")
-				}
-			}
+			return nil
 		}
 	}
 

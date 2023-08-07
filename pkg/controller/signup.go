@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"mvc/pkg/middleware"
 	"mvc/pkg/models"
 	"mvc/pkg/types"
 	"mvc/pkg/views"
@@ -9,8 +9,12 @@ import (
 )
 
 func Signup(w http.ResponseWriter, r *http.Request) {
-	t := views.SignUpPage()
-	t.Execute(w, nil)
+	if middleware.TypeOfUser(w, r) == "Unverified" {
+		t := views.SignUpPage()
+		t.Execute(w, nil)
+	} else {
+		w.Write([]byte("Error Occured"))
+	}
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
@@ -21,6 +25,5 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 		CPassword: r.FormValue("cpswd"),
 		IsAdmin:   false,
 	}
-	fmt.Println(data)
 	models.SignUp(data)
 }

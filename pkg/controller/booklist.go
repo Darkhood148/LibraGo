@@ -7,7 +7,11 @@ import (
 )
 
 func BookList(w http.ResponseWriter, r *http.Request) {
-	data := models.FetchBooks()
-	t := views.BookListPage()
-	t.Execute(w, data)
+	data, err := models.FetchBooks()
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	} else {
+		t := views.BookListPage()
+		t.Execute(w, data)
+	}
 }

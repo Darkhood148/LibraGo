@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	"errors"
 	"mvc/pkg/types"
 	"net/http"
 	"os"
@@ -18,54 +18,51 @@ type Claims struct {
 
 var jwtKey = []byte(os.Getenv("DB_JWTSECRET"))
 
-func Login(data types.LoginData, w http.ResponseWriter, r *http.Request) {
+func Login(data types.LoginData) (http.Cookie, error) {
 	db, err := Connection()
 	if err != nil {
-		fmt.Printf("error %s connecting to the database", err)
+		return http.Cookie{}, err
+	}
+	check := "SELECT * FROM users WHERE username=(?)"
+	res, err := db.Query(check, data.Username)
+	if err != nil {
+		return http.Cookie{}, err
+	} else if !res.Next() {
+		return http.Cookie{}, errors.New("username does not exists")
 	} else {
-		check := "SELECT * FROM users WHERE username=(?)"
-		res, err := db.Query(check, data.Username)
+		pswd := []byte(data.Password)
+		query := "SELECT hash FROM users WHERE username=(?)"
+		res, err := db.Query(query, data.Username)
 		if err != nil {
-			fmt.Println("Error Occurred")
-		} else if !res.Next() {
-			fmt.Println("User does not exist")
+			return http.Cookie{}, err
 		} else {
-			pswd := []byte(data.Password)
-			query := "SELECT hash FROM users WHERE username=(?)"
-			res, err := db.Query(query, data.Username)
+			var hashedPassword string
+			res.Next()
+			err := res.Scan(&hashedPassword)
 			if err != nil {
-				fmt.Println("Error Occurred", err)
+				return http.Cookie{}, err
 			} else {
-				var hashedPassword string
-				res.Next()
-				err := res.Scan(&hashedPassword)
+				err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), pswd)
 				if err != nil {
-					fmt.Println("Error Occurred", err)
+					return http.Cookie{}, errors.New("incorrect Password")
 				} else {
-					err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), pswd)
-					if err != nil {
-						fmt.Println("Incorrect")
-					} else {
-						expirationTime := time.Now().Add(5 * time.Minute)
-						claims := &Claims{
-							Username: data.Username,
-							RegisteredClaims: jwt.RegisteredClaims{
-								ExpiresAt: jwt.NewNumericDate(expirationTime),
-							},
-						}
-						token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-						tokenString, err := token.SignedString(jwtKey)
-						if err != nil {
-							w.WriteHeader(http.StatusInternalServerError)
-							return
-						}
-						http.SetCookie(w, &http.Cookie{
-							Name:    "token",
-							Value:   tokenString,
-							Expires: expirationTime,
-						})
-						fmt.Println(tokenString)
+					expirationTime := time.Now().Add(5 * time.Minute)
+					claims := &Claims{
+						Username: data.Username,
+						RegisteredClaims: jwt.RegisteredClaims{
+							ExpiresAt: jwt.NewNumericDate(expirationTime),
+						},
 					}
+					token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+					tokenString, err := token.SignedString(jwtKey)
+					if err != nil {
+						return http.Cookie{}, err
+					}
+					return http.Cookie{
+						Name:    "token",
+						Value:   tokenString,
+						Expires: expirationTime,
+					}, nil
 				}
 			}
 		}

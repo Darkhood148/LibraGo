@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"mvc/pkg/middleware"
 	"mvc/pkg/models"
 	"mvc/pkg/types"
@@ -11,25 +10,30 @@ import (
 )
 
 func IssueBook(w http.ResponseWriter, r *http.Request) {
-	t := views.IssueBookPage()
-	t.Execute(w, nil)
+	if middleware.TypeOfUser(w, r) != "Unverified" {
+		t := views.IssueBookPage()
+		t.Execute(w, nil)
+	} else {
+		w.Write([]byte("You need to be logged in to access this."))
+	}
 }
 
 func IssueBookPost(w http.ResponseWriter, r *http.Request) {
-	uname := middleware.VerifyJWT(w, r)
-	if uname != "" {
-		fmt.Println(uname)
+	if middleware.TypeOfUser(w, r) != "Unverified" {
 		val, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
-			fmt.Println("Error Occured")
+			w.Write([]byte("Error Occured"))
 		} else {
 			data := types.IssueBookData{
 				Bookid:   val,
-				Username: uname,
+				Username: middleware.VerifyJWT(w, r),
 			}
-			models.IssueBook(data)
+			err := models.IssueBook(data)
+			if err != nil {
+				w.Write([]byte(err.Error()))
+			} else {
+				w.Write([]byte("Success"))
+			}
 		}
-	} else {
-		fmt.Println("Not Logged In")
 	}
 }

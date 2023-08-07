@@ -18,7 +18,6 @@ func VerifyJWT(w http.ResponseWriter, r *http.Request) string {
 	c, err := r.Cookie("token")
 	if err != nil {
 		if err == http.ErrNoCookie {
-			w.WriteHeader(http.StatusUnauthorized)
 			return ""
 		}
 		w.WriteHeader(http.StatusBadRequest)

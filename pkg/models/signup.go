@@ -1,44 +1,41 @@
 package models
 
 import (
-	"fmt"
+	"errors"
 	"mvc/pkg/types"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-func SignUp(data types.SignupData) {
-	if (data.Fullname=="" || data.Username=="" || data.Password==""){
-		fmt.Println("One or more inputs are null")
-		return
+func SignUp(data types.SignupData) error {
+	if data.Fullname == "" || data.Username == "" || data.Password == "" {
+		return errors.New("one or more inputs are null")
 	}
 	db, err := Connection()
 	if err != nil {
-		fmt.Printf("error %s connecting to the database", err)
+		return err
+	}
+	check := "SELECT * FROM users WHERE username=(?)"
+	res, err := db.Query(check, data.Username)
+	if err != nil {
+		return err
+	} else if res.Next() {
+		return errors.New("username already exists")
 	} else {
-		check := "SELECT * FROM users WHERE username=(?)"
-		res, err := db.Query(check, data.Username)
-		if err != nil {
-			fmt.Println("Error Occured")
-		} else if res.Next() {
-			fmt.Println("User already exists")
+		if data.Password != data.CPassword {
+			return errors.New("passwords and confirmed passwords do not match")
 		} else {
-			if data.Password != data.CPassword {
-				fmt.Println("Password and Confirm Passwords do not match")
+			pswd := []byte(data.Password)
+			hashedPassword, err := bcrypt.GenerateFromPassword(pswd, bcrypt.DefaultCost)
+			if err != nil {
+				return err
 			} else {
-				pswd := []byte(data.Password)
-				hashedPassword, err := bcrypt.GenerateFromPassword(pswd, bcrypt.DefaultCost)
+				insertion := "INSERT INTO users VALUES (?, ?, ?, ?)"
+				_, err := db.Exec(insertion, data.Username, data.Fullname, hashedPassword, data.IsAdmin)
 				if err != nil {
-					panic(err)
-				} else {
-					insertion := "INSERT INTO users VALUES (?, ?, ?, ?)"
-					_, err := db.Exec(insertion, data.Username, data.Fullname, hashedPassword, data.IsAdmin)
-					if err != nil {
-						fmt.Println("Error Occured")
-					} else {
-						fmt.Println("Success")
-					}
+					return err
 				}
+				return nil
 			}
 		}
 	}

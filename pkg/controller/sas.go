@@ -10,24 +10,30 @@ import (
 )
 
 func Sas(w http.ResponseWriter, r *http.Request) {
-	uname := middleware.VerifyJWT(w, r)
-	if uname != "" {
-		if middleware.VerifyAdmin(uname) {
-			t := views.SasPage()
-			t.Execute(w, nil)
-		}
+	if middleware.TypeOfUser(w, r) == "Admin" {
+		t := views.SasPage()
+		t.Execute(w, nil)
 	} else {
-		w.Write([]byte("Login Please"))
+		w.Write([]byte("You need to be an admin to access this."))
 	}
 }
 
 func SasPost(w http.ResponseWriter, r *http.Request) {
-	val1, _ := strconv.Atoi(r.FormValue("bookid"))
-	val2, _ := strconv.Atoi(r.FormValue("quantity"))
-	data := types.SasData{
-		Bookid:   val1,
-		Option:   r.FormValue("options"),
-		Quantity: val2,
+	val1, err1 := strconv.Atoi(r.FormValue("bookid"))
+	val2, err2 := strconv.Atoi(r.FormValue("quantity"))
+	if err1 != nil && err2 != nil {
+		w.Write([]byte("Error Occured"))
+	} else {
+		data := types.SasData{
+			Bookid:   val1,
+			Option:   r.FormValue("options"),
+			Quantity: val2,
+		}
+		err := models.Sas(data)
+		if err != nil {
+			w.Write([]byte(err.Error()))
+		} else {
+			w.Write([]byte("Success"))
+		}
 	}
-	models.Sas(data)
 }
