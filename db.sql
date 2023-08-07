@@ -15,7 +15,7 @@ CREATE TABLE books (
 );
 CREATE TABLE checkouts (
     checkoutid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ofBook VARCHAR(255),
+    ofBook INT UNSIGNED,
     byUser VARCHAR(255),
     status ENUM('pending', 'issued', 'checkinDenied', 'checkinPending'),
     FOREIGN KEY (ofBook) REFERENCES books(bookid),
