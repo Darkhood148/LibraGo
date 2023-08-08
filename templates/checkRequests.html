@@ -12,6 +12,7 @@
   </head>
   <body>
     <h2>List of Books</h2>
+    {{ if ne (len .Reqs) 0 }}
     <table border="1">
       <thead>
         <tr>
@@ -56,5 +57,8 @@
         {{end}}
       </tbody>
     </table>
+    {{else}}
+    <h3>None</h3>
+    {{end}}
   </body>
 </html>
