@@ -35,5 +35,7 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("Success"))
 			}
 		}
+	} else {
+		w.Write([]byte("Please login to issue a book"))
 	}
 }

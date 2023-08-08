@@ -11,6 +11,9 @@ import (
 func Start() {
 	r := mux.NewRouter()
 
+	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/")))
+	r.PathPrefix("/static/").Handler(s)
+
 	r.HandleFunc("/", controller.Home).Methods("GET")
 	r.HandleFunc("/signup", controller.Signup).Methods("GET")
 	r.HandleFunc("/signup", controller.SignupPost).Methods("POST")
@@ -30,6 +33,7 @@ func Start() {
 	r.HandleFunc("/checkrequest", controller.CheckRequestPost).Methods("POST")
 	r.HandleFunc("/returnbook", controller.ReturnBookPost).Methods("POST")
 	r.HandleFunc("/returndeniedbook", controller.ReturnDeniedBookPost).Methods("POST")
+	r.HandleFunc("/logout", controller.Logout).Methods("GET")
 
 	http.ListenAndServe(":8000", r)
 }

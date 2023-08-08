@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+}
+body {
+  background-image: url("../images/signupbg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+div {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+#box {
+  position: relative;
+  left: 35vw;
+  top: 20vh;
+
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+  justify-content: center;
+
+  background-color: white;
+  border: 16px black double;
+  border-radius: 3%;
+
+  height: 60vh;
+  width: 30vw;
+}
+.container {
+    overflow: auto;
+}
+@media screen and (orientation:portrait) { 
+  #box{
+    width: 100vw;
+    left: 0;
+  }
+}

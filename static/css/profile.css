@@ -1,0 +1,21 @@
+table {
+  width: 40vw;
+}
+
+#navbar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+  
+    background-color: black;
+    color: white;
+  
+    height: 10vh;
+  
+    font-family: "Lumanosimo", cursive;
+  }
+
+#main {
+  position: absolute;
+  top: 10vh;
+}

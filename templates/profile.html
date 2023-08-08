@@ -5,74 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>LibraGo</title>
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="./assets/css/profile.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../static/css/profile.css" />
   </head>
   <body>
-    Hi {{.Username}}
-    <h1>Issued Books:</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Checkout-ID</th>
-          <th>Book Name</th>
-          <th>A1</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .CheckReqs.Reqs}}
-        <tr>
-          <td>{{.Checkoutid}}</td>
-          <td>{{.OfBook}}</td>
-          <td>
-            <form action="/returnbook" method="POST">
-              <button
-                class="column"
-                type="submit"
-                name="actionInfo"
-                value="{{.Checkoutid}}"
-              >
-                Return
-              </button>
-            </form>
-          </td>
-        </tr>
+    <div id="navbar" class="container-fluid">Hi {{.Username}}</div>
+    <div class="container-fluid" id="main">
+      <h1>Issued Books:</h1>
+      {{ if ne (len .CheckReqs.Reqs) 0 }}
+      <table class="table table-hover" border="1">
+        <thead>
+          <tr>
+            <th>Checkout-ID</th>
+            <th>Book Name</th>
+            <th>A1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .CheckReqs.Reqs}}
+          <tr>
+            <td>{{.Checkoutid}}</td>
+            <td>{{.OfBook}}</td>
+            <td>
+              <form action="/returnbook" method="POST">
+                <button
+                  class="column"
+                  type="submit"
+                  name="actionInfo"
+                  value="{{.Checkoutid}}"
+                >
+                  Return
+                </button>
+              </form>
+            </td>
+          </tr>
 
-        {{end}}
-      </tbody>
-    </table>
-    <h1>Checkins Denied: </h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Checkout-ID</th>
-          <th>Book Name</th>
-          <th>A1</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .DeniedReqs.Reqs}}
-        <tr>
-          <td>{{.Checkoutid}}</td>
-          <td>{{.OfBook}}</td>
-          <td>
-            <form action="/returndeniedbook" method="POST">
-              <button
-                class="column"
-                type="submit"
-                name="actionInfo"
-                value="{{.Checkoutid}}"
-              >
-                Return Again
-              </button>
-            </form>
-          </td>
-        </tr>
-
-        {{end}}
-      </tbody>
-    </table>
+          {{end}}
+        </tbody>
+      </table>
+      {{else}}
+      <h3>None</h3>
+      {{end}}
+      <h1>Checkins Denied:</h1>
+      {{ if ne (len .DeniedReqs.Reqs) 0 }}
+      <table class="table table-hover" border="1">
+        <thead>
+          <tr>
+            <th>Checkout-ID</th>
+            <th>Book Name</th>
+            <th>A1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .DeniedReqs.Reqs}}
+          <tr>
+            <td>{{.Checkoutid}}</td>
+            <td>{{.OfBook}}</td>
+            <td>
+              <form action="/returndeniedbook" method="POST">
+                <button
+                  class="column"
+                  type="submit"
+                  name="actionInfo"
+                  value="{{.Checkoutid}}"
+                >
+                  Return Again
+                </button>
+              </form>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{else}}
+      <h3>None</h3>
+      {{end}}
+      <h1>User Actions</h1>
+      <ul>
+        <li><a href="/booklist">View book list</a></li>
+        <li><a href="/issuebook">Issue a book</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
   </body>
 </html>

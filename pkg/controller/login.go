@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"mvc/pkg/middleware"
 	"mvc/pkg/models"
 	"mvc/pkg/types"
@@ -19,7 +18,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(middleware.TypeOfUser(w, r))
 	if middleware.TypeOfUser(w, r) == "Unverified" {
 		data := types.LoginData{
 			Username: r.FormValue("username"),
@@ -30,7 +28,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 		} else {
 			http.SetCookie(w, &cookie)
-			w.Write([]byte("Success"))
+			http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		}
 	} else {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
