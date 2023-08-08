@@ -10,24 +10,35 @@ func IssueBook(data types.IssueBookData) error {
 	if err != nil {
 		return err
 	}
-	query := "SELECT * FROM checkouts WHERE byUser = (?) AND ofBook = (?)"
-	res, err := db.Query(query, data.Username, data.Bookid)
+	query := "SELECT copiesAvailable FROM books WHERE bookid = (?)"
+	res, err := db.Query(query, data.Bookid)
 	if err != nil {
 		return err
 	}
-	if res.Next() {
-		return errors.New("you already own this book")
+	var temp int
+	res.Scan(&temp)
+	if temp > 0 {
+		query := "SELECT * FROM checkouts WHERE byUser = (?) AND ofBook = (?)"
+		res, err := db.Query(query, data.Username, data.Bookid)
+		if err != nil {
+			return err
+		}
+		if res.Next() {
+			return errors.New("you already own this book")
+		} else {
+			query := "INSERT INTO checkouts (ofBook, byUser, status) VALUES (?, ?, ?)"
+			_, err := db.Exec(query, data.Bookid, data.Username, "pending")
+			if err != nil {
+				return err
+			}
+			query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookid = (?)"
+			_, err = db.Exec(query, data.Bookid)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
 	} else {
-		query := "INSERT INTO checkouts (ofBook, byUser, status) VALUES (?, ?, ?)"
-		_, err := db.Exec(query, data.Bookid, data.Username, "pending")
-		if err != nil {
-			return err
-		}
-		query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookid = (?)"
-		_, err = db.Exec(query, data.Bookid)
-		if err != nil {
-			return err
-		}
-		return nil
+		return errors.New("no copies are available")
 	}
 }
