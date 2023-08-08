@@ -32,6 +32,8 @@ func AddBookPost(w http.ResponseWriter, r *http.Request) {
 			err := models.AddBook(data)
 			if err != nil {
 				w.Write([]byte(err.Error()))
+			} else {
+				w.Write([]byte("Success"))
 			}
 		}
 	} else {
