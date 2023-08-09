@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 type SignupData struct {
 	Fullname  string `json:"fullname"`
 	Username  string `json:"username"`
@@ -42,10 +44,11 @@ type IssueBookData struct {
 }
 
 type CheckRequest struct {
-	Checkoutid int    `json:"checkoutid"`
-	OfBook     int    `json:"bookid"`
-	ByUser     string `json:"username"`
-	Status     string `json:"status"`
+	Checkoutid int       `json:"checkoutid"`
+	OfBook     int       `json:"bookid"`
+	ByUser     string    `json:"username"`
+	Status     string    `json:"status"`
+	IssueTime  time.Time `json:"issueTime"`
 }
 
 type CheckRequests struct {

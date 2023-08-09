@@ -18,7 +18,8 @@ func CheckRequest(data int, status string) error {
 	defer db.Close()
 	if res.Next() {
 		var resData types.CheckRequest
-		err := res.Scan(&resData.Checkoutid, &resData.OfBook, &resData.ByUser, &resData.Status)
+		var temp string
+		err := res.Scan(&resData.Checkoutid, &resData.OfBook, &resData.ByUser, &resData.Status, &temp)
 		if err != nil {
 			return err
 		}
@@ -29,15 +30,30 @@ func CheckRequest(data int, status string) error {
 				if err != nil {
 					return err
 				}
+				query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookid = (?)"
+				_, err = db.Exec(query, resData.OfBook)
+				if err != nil {
+					return err
+				}
+				query = "SELECT copiesAvailable FROM books WHERE bookid = (?)"
+				res, err = db.Query(query, resData.OfBook)
+				if err != nil {
+					return err
+				}
+				res.Next()
+				var ca int
+				res.Scan(&ca)
+				if ca <= 0 {
+					query = "DELETE FROM checkouts WHERE ofBook = (?) AND status = \"pending\""
+					_, err = db.Exec(query, resData.OfBook)
+					if err != nil {
+						return err
+					}
+				}
 				return nil
 			} else {
 				query := "DELETE FROM checkouts WHERE checkoutid = (?)"
 				_, err := db.Exec(query, resData.Checkoutid)
-				if err != nil {
-					return err
-				}
-				query = "UPDATE books SET copiesAvailable = copiesAvailable + 1 WHERE bookid = (?)"
-				_, err = db.Exec(query, resData.OfBook)
 				if err != nil {
 					return err
 				}

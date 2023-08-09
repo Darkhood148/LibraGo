@@ -2,6 +2,7 @@ package models
 
 import (
 	"mvc/pkg/types"
+	"time"
 )
 
 func FetchDeniedReqs(data string) (types.CheckRequests, error) {
@@ -21,7 +22,12 @@ func FetchDeniedReqs(data string) (types.CheckRequests, error) {
 	var fetchReqs []types.CheckRequest
 	for rows.Next() {
 		var req types.CheckRequest
-		err := rows.Scan(&req.Checkoutid, &req.OfBook, &req.ByUser, &req.Status)
+		var temp string
+		err := rows.Scan(&req.Checkoutid, &req.OfBook, &req.ByUser, &req.Status, &temp)
+		if err != nil {
+			return types.CheckRequests{}, err
+		}
+		req.IssueTime, err = time.Parse("2006-01-02 15:04:05", temp)
 		if err != nil {
 			return types.CheckRequests{}, err
 		}

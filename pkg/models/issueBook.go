@@ -2,8 +2,8 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"mvc/pkg/types"
+	"time"
 )
 
 func IssueBook(data types.IssueBookData) error {
@@ -20,8 +20,6 @@ func IssueBook(data types.IssueBookData) error {
 	res.Next()
 	var temp int
 	res.Scan(&temp)
-	fmt.Println(data.Bookid)
-	fmt.Println(temp)
 	if temp > 0 {
 		query := "SELECT * FROM checkouts WHERE byUser = (?) AND ofBook = (?)"
 		res, err := db.Query(query, data.Username, data.Bookid)
@@ -31,13 +29,8 @@ func IssueBook(data types.IssueBookData) error {
 		if res.Next() {
 			return errors.New("you already own this book")
 		} else {
-			query := "INSERT INTO checkouts (ofBook, byUser, status) VALUES (?, ?, ?)"
-			_, err := db.Exec(query, data.Bookid, data.Username, "pending")
-			if err != nil {
-				return err
-			}
-			query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookid = (?)"
-			_, err = db.Exec(query, data.Bookid)
+			query := "INSERT INTO checkouts (ofBook, byUser, status, issueTime) VALUES (?, ?, ?, ?)"
+			_, err := db.Exec(query, data.Bookid, data.Username, "pending", time.Now())
 			if err != nil {
 				return err
 			}
