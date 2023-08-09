@@ -19,6 +19,7 @@ type ProfileInfo struct {
 	Username   string        `json:"username"`
 	CheckReqs  CheckRequests `json:"checkreq"`
 	DeniedReqs CheckRequests `json:"deniedreq"`
+	Fine       int           `json:"fine"`
 }
 
 type Book struct {
@@ -49,6 +50,7 @@ type CheckRequest struct {
 	ByUser     string    `json:"username"`
 	Status     string    `json:"status"`
 	IssueTime  time.Time `json:"issueTime"`
+	Fine       int       `json:"fine"`
 }
 
 type CheckRequests struct {

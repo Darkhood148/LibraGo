@@ -14,7 +14,7 @@ func FetchUserReqs(data string) (types.CheckRequests, error) {
 	selectSql := "SELECT * FROM checkouts WHERE byUser = (?) AND status = \"issued\""
 	rows, err := db.Query(selectSql, data)
 	db.Close()
-
+	maxDelay := 24 * time.Hour
 	if err != nil {
 		return types.CheckRequests{}, err
 	}
@@ -30,6 +30,11 @@ func FetchUserReqs(data string) (types.CheckRequests, error) {
 		req.IssueTime, err = time.Parse("2006-01-02 15:04:05", temp)
 		if err != nil {
 			return types.CheckRequests{}, err
+		}
+		if time.Now().After(req.IssueTime.Add(maxDelay)) {
+			req.Fine = int(time.Since(req.IssueTime.Add(maxDelay)))
+		} else {
+			req.Fine = 0
 		}
 		fetchReqs = append(fetchReqs, req)
 	}

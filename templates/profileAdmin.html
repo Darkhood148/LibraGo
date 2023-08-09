@@ -21,6 +21,7 @@
           <tr>
             <th>Checkout-ID</th>
             <th>Book Name</th>
+            <th>Fine</th>
             <th>A1</th>
           </tr>
         </thead>
@@ -29,6 +30,13 @@
           <tr>
             <td>{{.Checkoutid}}</td>
             <td>{{.OfBook}}</td>
+            <td>
+              {{if eq .Fine 0}}
+                N/A
+              {{else}}
+                {{.Fine}}
+              {{end}}
+            </td>
             <td>
               <form action="/returnbook" method="POST">
                 <button
