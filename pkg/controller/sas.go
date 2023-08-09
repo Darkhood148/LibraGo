@@ -10,30 +10,36 @@ import (
 )
 
 func Sas(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Admin" {
+	if middleware.TypeOfUser(w, r) == types.Admin {
 		t := views.SasPage()
 		t.Execute(w, nil)
 	} else {
-		w.Write([]byte("You need to be an admin to access this."))
+		w.Write([]byte(types.NotAdmin))
 	}
 }
 
 func SasPost(w http.ResponseWriter, r *http.Request) {
-	val1, err1 := strconv.Atoi(r.FormValue("bookid"))
-	val2, err2 := strconv.Atoi(r.FormValue("quantity"))
-	if err1 != nil || err2 != nil {
-		w.Write([]byte("Error Occured while parsing input values"))
-	} else {
-		data := types.SasData{
-			Bookid:   val1,
-			Option:   r.FormValue("options"),
-			Quantity: val2,
-		}
-		err := models.Sas(data)
-		if err != nil {
-			w.Write([]byte(err.Error()))
+	if middleware.TypeOfUser(w, r) == types.Admin {
+		val1, err1 := strconv.Atoi(r.FormValue("bookid"))
+		val2, err2 := strconv.Atoi(r.FormValue("quantity"))
+		if err1 != nil || err2 != nil {
+			w.Write([]byte("Error Occured while parsing input values"))
+		} else if val2 <= 0 || val1 <= 0 {
+			w.Write([]byte("Please enter positive values"))
 		} else {
-			w.Write([]byte("Success"))
+			data := types.SasData{
+				Bookid:   val1,
+				Option:   r.FormValue("options"),
+				Quantity: val2,
+			}
+			err := models.Sas(data)
+			if err != nil {
+				w.Write([]byte(err.Error()))
+			} else {
+				w.Write([]byte(types.Success))
+			}
 		}
+	} else {
+		w.Write([]byte(types.NotAdmin))
 	}
 }

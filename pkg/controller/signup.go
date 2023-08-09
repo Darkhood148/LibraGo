@@ -9,7 +9,7 @@ import (
 )
 
 func Signup(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Unverified" {
+	if middleware.TypeOfUser(w, r) == types.Unverified {
 		t := views.SignUpPage()
 		t.Execute(w, nil)
 	} else {
@@ -18,7 +18,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Unverified" {
+	if middleware.TypeOfUser(w, r) == types.Unverified {
 		data := types.SignupData{
 			Fullname:  r.FormValue("fullname"),
 			Username:  r.FormValue("username"),

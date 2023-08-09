@@ -1,18 +1,19 @@
 package middleware
 
 import (
+	"mvc/pkg/types"
 	"net/http"
 )
 
-func TypeOfUser(w http.ResponseWriter, r *http.Request) string {
+func TypeOfUser(w http.ResponseWriter, r *http.Request) types.User {
 	uname := VerifyJWT(w, r)
 	if uname != "" {
 		if VerifyAdmin(uname) {
-			return "Admin"
+			return types.Admin
 		} else {
-			return "User"
+			return types.Client
 		}
 	} else {
-		return "Unverified"
+		return types.Unverified
 	}
 }

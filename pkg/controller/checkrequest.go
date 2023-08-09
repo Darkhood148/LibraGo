@@ -4,6 +4,7 @@ import (
 	"errors"
 	"mvc/pkg/middleware"
 	"mvc/pkg/models"
+	"mvc/pkg/types"
 	"mvc/pkg/views"
 	"net/http"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 )
 
 func CheckRequest(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Admin" {
+	if middleware.TypeOfUser(w, r) == types.Admin {
 		data, err := models.FetchRequests()
 		if err != nil {
 			w.Write([]byte(err.Error()))
@@ -20,12 +21,12 @@ func CheckRequest(w http.ResponseWriter, r *http.Request) {
 			t.Execute(w, data)
 		}
 	} else {
-		w.Write([]byte("You need to be an admin to access this."))
+		w.Write([]byte(types.NotAdmin))
 	}
 }
 
 func CheckRequestPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Admin" {
+	if middleware.TypeOfUser(w, r) == types.Admin {
 		temp := r.FormValue("actionInfo")
 		words := strings.Split(temp, "-")
 		var status string
@@ -45,10 +46,10 @@ func CheckRequestPost(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				w.Write([]byte(err.Error()))
 			} else {
-				w.Write([]byte("Success"))
+				w.Write([]byte(types.Success))
 			}
 		}
 	} else {
-		w.Write([]byte("You need to be an admin to access this."))
+		w.Write([]byte(types.NotAdmin))
 	}
 }

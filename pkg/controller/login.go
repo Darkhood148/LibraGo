@@ -9,7 +9,7 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != "Unverified" {
+	if middleware.TypeOfUser(w, r) != types.Unverified {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	} else {
 		t := views.LoginPage()
@@ -18,7 +18,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Unverified" {
+	if middleware.TypeOfUser(w, r) == types.Unverified {
 		data := types.LoginData{
 			Username: r.FormValue("username"),
 			Password: r.FormValue("pswd"),

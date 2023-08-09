@@ -10,19 +10,21 @@ import (
 )
 
 func AddBook(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Admin" {
+	if middleware.TypeOfUser(w, r) == types.Admin {
 		t := views.AddBookPage()
 		t.Execute(w, nil)
 	} else {
-		w.Write([]byte("You need to be an admin to access this."))
+		w.Write([]byte(types.NotAdmin))
 	}
 }
 
 func AddBookPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) == "Admin" {
+	if middleware.TypeOfUser(w, r) == types.Admin {
 		quant, err := strconv.Atoi(r.FormValue("quantity"))
 		if err != nil {
 			w.Write([]byte(err.Error()))
+		} else if quant <= 0 {
+			w.Write([]byte("Please enter positive values"))
 		} else {
 			data := types.Book{
 				Bookname: r.FormValue("bookname"),
@@ -33,10 +35,10 @@ func AddBookPost(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				w.Write([]byte(err.Error()))
 			} else {
-				w.Write([]byte("Success"))
+				w.Write([]byte(types.Success))
 			}
 		}
 	} else {
-		w.Write([]byte("You need to be an admin to access this."))
+		w.Write([]byte(types.NotAdmin))
 	}
 }

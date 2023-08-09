@@ -9,7 +9,7 @@ import (
 )
 
 func Profile(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != "Unverified" {
+	if middleware.TypeOfUser(w, r) != types.Unverified {
 		uname := middleware.VerifyJWT(w, r)
 		denreq, err1 := models.FetchDeniedReqs(uname)
 		usereq, err2 := models.FetchUserReqs(uname)
@@ -25,6 +25,6 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			t.Execute(w, info)
 		}
 	} else {
-		w.Write([]byte("You need to be logged in to access this."))
+		w.Write([]byte(types.NotLoggedIn))
 	}
 }

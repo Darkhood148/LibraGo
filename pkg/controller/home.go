@@ -2,6 +2,7 @@ package controller
 
 import (
 	"mvc/pkg/middleware"
+	"mvc/pkg/types"
 	"mvc/pkg/views"
 	"net/http"
 )
@@ -13,7 +14,7 @@ type Data struct {
 func Home(w http.ResponseWriter, r *http.Request) {
 	t := views.StartPage()
 	var data Data
-	if middleware.TypeOfUser(w, r) == "Unverified" {
+	if middleware.TypeOfUser(w, r) == types.Unverified {
 		data.Status = false
 	} else {
 		data.Status = true

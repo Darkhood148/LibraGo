@@ -56,3 +56,19 @@ type ActionData struct {
 	CheckReq CheckRequest `json:"checkrequest"`
 	Action   string       `json:"action"`
 }
+
+type User string
+
+const (
+	Unverified User = "Unverified"
+	Client     User = "Client"
+	Admin      User = "Admin"
+)
+
+type Response string
+
+const ( //Some standard error messages
+	NotAdmin    Response = "You need to be an admin to access this"
+	NotLoggedIn Response = "You need to be logged in to access this"
+	Success     Response = "Successful"
+)

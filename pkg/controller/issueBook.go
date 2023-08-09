@@ -10,16 +10,16 @@ import (
 )
 
 func IssueBook(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != "Unverified" {
+	if middleware.TypeOfUser(w, r) != types.Unverified {
 		t := views.IssueBookPage()
 		t.Execute(w, nil)
 	} else {
-		w.Write([]byte("You need to be logged in to access this."))
+		w.Write([]byte(types.NotLoggedIn))
 	}
 }
 
 func IssueBookPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != "Unverified" {
+	if middleware.TypeOfUser(w, r) != types.Unverified {
 		val, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
 			w.Write([]byte("Error Occured while parsing input values"))
@@ -32,10 +32,10 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				w.Write([]byte(err.Error()))
 			} else {
-				w.Write([]byte("Success"))
+				w.Write([]byte(types.Success))
 			}
 		}
 	} else {
-		w.Write([]byte("Please login to issue a book"))
+		w.Write([]byte(types.NotLoggedIn))
 	}
 }
