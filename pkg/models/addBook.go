@@ -10,6 +10,7 @@ func AddBook(data types.Book) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	query := "SELECT * FROM books WHERE name=(?) AND author=(?)"
 	res, err := db.Query(query, data.Bookname, data.Author)
 	if err != nil {

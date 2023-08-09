@@ -21,8 +21,8 @@ func Sas(w http.ResponseWriter, r *http.Request) {
 func SasPost(w http.ResponseWriter, r *http.Request) {
 	val1, err1 := strconv.Atoi(r.FormValue("bookid"))
 	val2, err2 := strconv.Atoi(r.FormValue("quantity"))
-	if err1 != nil && err2 != nil {
-		w.Write([]byte("Error Occured"))
+	if err1 != nil || err2 != nil {
+		w.Write([]byte("Error Occured while parsing input values"))
 	} else {
 		data := types.SasData{
 			Bookid:   val1,

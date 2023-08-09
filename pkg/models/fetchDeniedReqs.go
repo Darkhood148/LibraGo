@@ -9,6 +9,7 @@ func FetchDeniedReqs(data string) (types.CheckRequests, error) {
 	if err != nil {
 		return types.CheckRequests{}, err
 	}
+	defer db.Close()
 	selectSql := "SELECT * FROM checkouts WHERE byUser = (?) AND status = \"checkinDenied\""
 	rows, err := db.Query(selectSql, data)
 	db.Close()

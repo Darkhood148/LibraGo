@@ -5,6 +5,7 @@ func DeleteBook(data int) error {
 	if err != nil {
 		return err
 	} else {
+		defer db.Close()
 		query := "DELETE FROM books WHERE bookid = (?)"
 		_, err := db.Exec(query, data)
 		if err != nil {

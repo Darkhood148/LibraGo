@@ -21,7 +21,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == "Admin" {
 		data, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
-			w.Write([]byte("Error Occured"))
+			w.Write([]byte("Error Occured while parsing input values"))
 		} else {
 			err := models.DeleteBook(data)
 			if err != nil {

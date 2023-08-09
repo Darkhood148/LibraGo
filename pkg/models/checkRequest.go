@@ -15,6 +15,7 @@ func CheckRequest(data int, status string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	if res.Next() {
 		var resData types.CheckRequest
 		err := res.Scan(&resData.Checkoutid, &resData.OfBook, &resData.ByUser, &resData.Status)

@@ -5,6 +5,7 @@ func ReturnDeniedBook(data string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	query := "UPDATE checkouts SET status = \"checkinPending\" WHERE checkoutid = (?)"
 	_, err = db.Exec(query, data)
 	if err != nil {

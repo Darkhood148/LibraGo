@@ -14,7 +14,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		denreq, err1 := models.FetchDeniedReqs(uname)
 		usereq, err2 := models.FetchUserReqs(uname)
 		if err1 != nil || err2 != nil {
-			w.Write([]byte("Error Occured"))
+			w.Write([]byte("Error Occured occured while fetching requests"))
 		} else {
 			t := views.ProfilePage(middleware.VerifyAdmin(uname))
 			info := types.ProfileInfo{

@@ -15,6 +15,7 @@ func SignUp(data types.SignupData) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	check := "SELECT * FROM users WHERE username=(?)"
 	res, err := db.Query(check, data.Username)
 	if err != nil {

@@ -22,7 +22,7 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) != "Unverified" {
 		val, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
-			w.Write([]byte("Error Occured"))
+			w.Write([]byte("Error Occured while parsing input values"))
 		} else {
 			data := types.IssueBookData{
 				Bookid:   val,

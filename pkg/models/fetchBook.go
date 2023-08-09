@@ -9,6 +9,7 @@ func FetchBooks() (types.Books, error) {
 	if err != nil {
 		return types.Books{}, err
 	}
+	defer db.Close()
 	selectSql := "SELECT * FROM books"
 	rows, err := db.Query(selectSql)
 	db.Close()

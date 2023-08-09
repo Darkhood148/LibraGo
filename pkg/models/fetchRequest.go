@@ -9,6 +9,7 @@ func FetchRequests() (types.CheckRequests, error) {
 	if err != nil {
 		return types.CheckRequests{}, err
 	}
+	defer db.Close()
 	selectSql := "SELECT * FROM checkouts WHERE status = \"checkinPending\" OR status = \"pending\""
 	rows, err := db.Query(selectSql)
 	db.Close()

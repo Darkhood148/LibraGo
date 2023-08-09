@@ -39,7 +39,7 @@ func CheckRequestPost(w http.ResponseWriter, r *http.Request) {
 		}
 		checkoutid, err := strconv.Atoi(words[0])
 		if err != nil {
-			w.Write([]byte("Error Occured"))
+			w.Write([]byte("Error Occured while parsing input"))
 		} else {
 			err := models.CheckRequest(checkoutid, status)
 			if err != nil {

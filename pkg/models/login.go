@@ -23,6 +23,7 @@ func Login(data types.LoginData) (http.Cookie, error) {
 	if err != nil {
 		return http.Cookie{}, err
 	}
+	defer db.Close()
 	check := "SELECT * FROM users WHERE username=(?)"
 	res, err := db.Query(check, data.Username)
 	if err != nil {
