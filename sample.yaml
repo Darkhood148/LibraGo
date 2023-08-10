@@ -1,0 +1,8 @@
+# Rename this file to config.yaml after filling in the details
+
+
+DB_USERNAME: 
+DB_PASSWORD: 
+DB_HOST: 127.0.0.1:3306
+DB_NAME: librago
+JWT_SECRET:

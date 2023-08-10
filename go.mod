@@ -9,4 +9,5 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

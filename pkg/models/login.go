@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"log"
 	"mvc/pkg/types"
 	"net/http"
 	"os"
@@ -9,14 +10,36 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/yaml.v3"
 )
+
+var jwtKey []byte
+
+type JWTConfig struct {
+	JWT_SECRET string `yaml:"JWT_SECRET"`
+}
+
+func JwtSecretKey() {
+	configFile, err := os.Open("config.yaml")
+	if err != nil {
+		log.Fatalf("failed to open config file: %v", err)
+	}
+	defer configFile.Close()
+
+	var config JWTConfig
+	decoder := yaml.NewDecoder(configFile)
+	err = decoder.Decode(&config)
+	if err != nil {
+		log.Fatalf("failed to decode config: %v", err)
+	}
+
+	jwtKey = []byte(config.JWT_SECRET)
+}
 
 type Claims struct {
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
-
-var jwtKey = []byte(os.Getenv("DB_JWTSECRET"))
 
 func Login(data types.LoginData) (http.Cookie, error) {
 	db, err := Connection()
@@ -54,6 +77,7 @@ func Login(data types.LoginData) (http.Cookie, error) {
 							ExpiresAt: jwt.NewNumericDate(expirationTime),
 						},
 					}
+					JwtSecretKey()
 					token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 					tokenString, err := token.SignedString(jwtKey)
 					if err != nil {
