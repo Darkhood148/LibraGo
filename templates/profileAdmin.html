@@ -33,6 +33,31 @@
       </div>
     </div>
     <div class="container-fluid" id="main">
+      <h1>All books</h1>
+      {{ if ne (len .Inventory.Books) 0 }}
+      <table class="table table-hover" border="1">
+        <thead>
+          <tr>
+            <th>Bookid</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Total Copies</th>
+            <th>Available Copies</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .Inventory.Books}}
+          <tr>
+            <td>{{.Bookid}}</td>
+            <td>{{.Bookname}}</td>
+            <td>{{.Author}}</td>
+            <td>{{.TotalCopies}}</td>
+            <td>{{.CopiesAvailable}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{else}} None {{end}}
     </div>
   </body>
 </html>

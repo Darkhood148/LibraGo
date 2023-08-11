@@ -15,6 +15,23 @@ type LoginData struct {
 	Password string `json:"pswd"`
 }
 
+type BookInventory struct {
+	Bookid          int    `json:"bookid"`
+	Bookname        string `json:"bookname"`
+	Author          string `json:"string"`
+	TotalCopies     int    `json:"totcopies"`
+	CopiesAvailable int    `json:"copiesAvailable"`
+}
+
+type Inventory struct {
+	Books []BookInventory `json:"books"`
+}
+
+type ProfileAdminInfo struct {
+	Username  string    `json:"username"`
+	Inventory Inventory `json:"inventory"`
+}
+
 type ProfileInfo struct {
 	Username    string        `json:"username"`
 	PendingReqs CheckRequests `json:"pendingreqs"`
