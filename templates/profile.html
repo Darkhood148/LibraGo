@@ -12,8 +12,42 @@
     <link rel="stylesheet" href="../static/css/profile.css" />
   </head>
   <body>
-    <div id="navbar" class="container-fluid">Hi {{.Username}}</div>
+    <div id="navbar" class="container-fluid">
+    <div id="name">Hi {{.Username}}</div>
+    <div id="actions">
+      <div>
+        <a href="/viewBookList"> Book List </a>
+      </div>
+      <div>
+        <a href="/issueBook"> Issue Book </a>
+      </div>
+      <div>
+        <a href="/logout"> Logout </a>
+      </div>
+    </div>
+    </div>
     <div class="container-fluid" id="main">
+      <h1>Issue Requests: </h1>
+      {{ if ne (len .PendingReqs.Reqs) 0 }}
+      <table class="table table-hover" border="1">
+        <thead>
+          <tr>
+            <th>Checkout-ID</th>
+            <th>Book Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .CheckReqs.Reqs}}
+          <tr>
+            <td>{{.Checkoutid}}</td>
+            <td>{{.OfBook}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{else}}
+      <h3>None</h3>
+      {{end}}      
       <h1>Issued Books:</h1>
       {{ if ne (len .CheckReqs.Reqs) 0 }}
       <table class="table table-hover" border="1">
@@ -38,7 +72,7 @@
               {{end}}
             </td>
             <td>
-              <form action="/returnbook" method="POST">
+              <form action="/returnBook" method="POST">
                 <button
                   class="column"
                   type="submit"
@@ -73,7 +107,7 @@
             <td>{{.Checkoutid}}</td>
             <td>{{.OfBook}}</td>
             <td>
-              <form action="/returndeniedbook" method="POST">
+              <form action="/returnDeniedBook" method="POST">
                 <button
                   class="column"
                   type="submit"
@@ -91,12 +125,6 @@
       {{else}}
       <h3>None</h3>
       {{end}}
-      <h1>User Actions</h1>
-      <ul>
-        <li><a href="/booklist">View book list</a></li>
-        <li><a href="/issuebook">Issue a book</a></li>
-        <li><a href="/logout">Logout</a></li>
-      </ul>
     </div>
   </body>
 </html>

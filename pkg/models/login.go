@@ -70,7 +70,7 @@ func Login(data types.LoginData) (http.Cookie, error) {
 				if err != nil {
 					return http.Cookie{}, errors.New("incorrect Password")
 				} else {
-					expirationTime := time.Now().Add(5 * time.Minute)
+					expirationTime := time.Now().Add(5 * time.Hour)
 					claims := &Claims{
 						Username: data.Username,
 						RegisteredClaims: jwt.RegisteredClaims{

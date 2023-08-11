@@ -13,14 +13,16 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		uname := middleware.VerifyJWT(w, r)
 		denreq, err1 := models.FetchDeniedReqs(uname)
 		usereq, err2 := models.FetchUserReqs(uname)
-		if err1 != nil || err2 != nil {
+		penreq, err3 := models.FetchPendingReqs(uname)
+		if err1 != nil || err2 != nil || err3 != nil {
 			w.Write([]byte("Error Occured occured while fetching requests"))
 		} else {
 			t := views.ProfilePage(middleware.VerifyAdmin(uname))
 			info := types.ProfileInfo{
-				Username:   uname,
-				CheckReqs:  usereq,
-				DeniedReqs: denreq,
+				Username:    uname,
+				CheckReqs:   usereq,
+				DeniedReqs:  denreq,
+				PendingReqs: penreq,
 			}
 			t.Execute(w, info)
 		}

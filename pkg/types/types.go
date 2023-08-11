@@ -16,10 +16,11 @@ type LoginData struct {
 }
 
 type ProfileInfo struct {
-	Username   string        `json:"username"`
-	CheckReqs  CheckRequests `json:"checkreq"`
-	DeniedReqs CheckRequests `json:"deniedreq"`
-	Fine       int           `json:"fine"`
+	Username    string        `json:"username"`
+	PendingReqs CheckRequests `json:"pendingreqs"`
+	CheckReqs   CheckRequests `json:"checkreq"`
+	DeniedReqs  CheckRequests `json:"deniedreq"`
+	Fine        int           `json:"fine"`
 }
 
 type Book struct {
@@ -75,5 +76,6 @@ type Response string
 const ( //Some standard error messages
 	NotAdmin    Response = "You need to be an admin to access this"
 	NotLoggedIn Response = "You need to be logged in to access this"
+	NotClient   Response = "You need to be a client to access this"
 	Success     Response = "Successful"
 )

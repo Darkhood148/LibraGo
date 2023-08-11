@@ -8,7 +8,7 @@ import (
 )
 
 func ReturnDeniedBookPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != types.Unverified {
+	if middleware.TypeOfUser(w, r) == types.Client {
 		data := r.FormValue("actionInfo")
 		err := models.ReturnDeniedBook(data)
 		if err != nil {
@@ -17,6 +17,6 @@ func ReturnDeniedBookPost(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(types.Success))
 		}
 	} else {
-		w.Write([]byte(types.NotLoggedIn))
+		w.Write([]byte(types.NotClient))
 	}
 }

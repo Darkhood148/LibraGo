@@ -10,7 +10,7 @@ import (
 )
 
 func IssueBook(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != types.Unverified {
+	if middleware.TypeOfUser(w, r) == types.Client {
 		t := views.IssueBookPage()
 		t.Execute(w, nil)
 	} else {
@@ -19,7 +19,7 @@ func IssueBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func IssueBookPost(w http.ResponseWriter, r *http.Request) {
-	if middleware.TypeOfUser(w, r) != types.Unverified {
+	if middleware.TypeOfUser(w, r) == types.Client {
 		val, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
 			w.Write([]byte("Error Occured while parsing input values"))
@@ -36,6 +36,6 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		w.Write([]byte(types.NotLoggedIn))
+		w.Write([]byte(types.NotClient))
 	}
 }

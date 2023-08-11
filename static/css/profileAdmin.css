@@ -1,0 +1,67 @@
+table {
+  width: 40vw;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: black;
+}
+
+#navbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+
+  background-color: black;
+  color: white;
+
+  height: 10vh;
+
+  font-family: "Lumanosimo", cursive;
+
+  font-size: 140%;
+}
+
+#navbar div {
+  display: flex;
+}
+
+#navbar div div {
+  box-sizing: border-box;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  border: white 1px solid;
+  padding: 7px;
+  transition: all 0.7s ease;
+}
+
+#navbar div div:hover {
+  background-color: white;
+  color: black;
+}
+
+#actions {
+  position: absolute;
+  right: 1vw;
+}
+
+#main {
+  position: absolute;
+  top: 10vh;
+}
+
+@media screen and (orientation: portrait) {
+    #navbar {
+        font-size: 3vmin;
+    }
+    #navbar div div {
+        border: none;
+    }
+    #name {
+        visibility: hidden;
+    }
+}
