@@ -18,18 +18,21 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Unverified {
-		data := types.SignupData{
-			Fullname:  r.FormValue("fullname"),
-			Username:  r.FormValue("username"),
-			Password:  r.FormValue("pswd"),
-			CPassword: r.FormValue("cpswd"),
-			IsAdmin:   false,
-		}
-		err := models.SignUp(data)
-		if err != nil {
-			renderSignupPage(w, "2", err.Error())
+		if r.FormValue("pswd") == r.FormValue("cpswd") {
+			data := types.SignupData{
+				Fullname: r.FormValue("fullname"),
+				Username: r.FormValue("username"),
+				Password: r.FormValue("pswd"),
+				IsAdmin:  types.Client,
+			}
+			err := models.SignUp(data)
+			if err != nil {
+				renderSignupPage(w, "2", err.Error())
+			} else {
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+			}
 		} else {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			renderSignupPage(w, "2", "Password and Confirm-Password do not match")
 		}
 	} else {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)

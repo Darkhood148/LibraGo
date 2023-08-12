@@ -1,5 +1,5 @@
 table {
-  width: 40vw;
+  width: 100vw;
 }
 a {
   color: white;
@@ -36,4 +36,8 @@ a:hover {
   #prof {
     position: absolute;
     right: 2%;
+  }
+  #bruh{
+    position: absolute;
+    top: 20vh;
   }

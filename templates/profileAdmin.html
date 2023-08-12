@@ -42,8 +42,10 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid" id="main">
+    <div id="allBooks">
       <h1>All books</h1>
+    </div>
+    <div class="container-fluid" id="main">
       {{ if ne (len .Inventory.Books) 0 }}
       <table class="table table-hover" border="1">
         <thead>
@@ -58,11 +60,11 @@
         <tbody>
           {{ range .Inventory.Books}}
           <tr>
-            <td>{{.Bookid}}</td>
-            <td>{{.Bookname}}</td>
-            <td>{{.Author}}</td>
+            <td>{{.Book.Bookid}}</td>
+            <td>{{.Book.Bookname}}</td>
+            <td>{{.Book.Author}}</td>
             <td>{{.TotalCopies}}</td>
-            <td>{{.CopiesAvailable}}</td>
+            <td>{{.Book.Quantity}}</td>
           </tr>
           {{end}}
         </tbody>

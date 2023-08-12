@@ -10,12 +10,17 @@ import (
 
 func BookList(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
-		data, err := models.FetchBooks()
+		db, err := models.Connection()
 		if err != nil {
-			renderErrorPage(w, err.Error())
+			data, err := models.FetchBooks(db)
+			if err != nil {
+				renderErrorPage(w, err.Error())
+			} else {
+				t := views.BookListPage()
+				t.Execute(w, data)
+			}
 		} else {
-			t := views.BookListPage()
-			t.Execute(w, data)
+			renderErrorPage(w, "Cannot Connect to db")
 		}
 	} else {
 		renderInvalidPage(w, string(types.NotClient))

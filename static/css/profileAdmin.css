@@ -1,7 +1,3 @@
-table {
-  width: 40vw;
-}
-
 a {
     text-decoration: none;
     color: white;
@@ -20,6 +16,7 @@ a {
   font-family: "Lumanosimo", cursive;
 
   font-size: 140%;
+  z-index: 5;
 }
 
 #navbar div {
@@ -50,7 +47,7 @@ a {
 
 #main {
   position: absolute;
-  top: 10vh;
+  top: 20vh;
 }
 
 @media screen and (orientation: portrait) {
@@ -63,4 +60,12 @@ a {
     #name {
         visibility: hidden;
     }
+}
+
+#allBooks {
+  position: fixed;
+  top: 10vh;
+  z-index: 5;
+  background-color: white;
+  width: 100vw;
 }

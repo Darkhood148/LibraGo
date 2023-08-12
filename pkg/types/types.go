@@ -3,11 +3,10 @@ package types
 import "time"
 
 type SignupData struct {
-	Fullname  string `json:"fullname"`
-	Username  string `json:"username"`
-	Password  string `json:"pswd"`
-	CPassword string `json:"cpswd"`
-	IsAdmin   bool   `json:"isAdmin"`
+	Fullname string `json:"fullname"`
+	Username string `json:"username"`
+	Password string `json:"pswd"`
+	IsAdmin  User   `json:"isAdmin"`
 }
 
 type LoginData struct {
@@ -16,11 +15,8 @@ type LoginData struct {
 }
 
 type BookInventory struct {
-	Bookid          int    `json:"bookid"`
-	Bookname        string `json:"bookname"`
-	Author          string `json:"string"`
-	TotalCopies     int    `json:"totcopies"`
-	CopiesAvailable int    `json:"copiesAvailable"`
+	Book        Book `json:"bookinfo"`
+	TotalCopies int  `json:"totcopies"`
 }
 
 type Inventory struct {

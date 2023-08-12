@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fmt"
 	"mvc/pkg/middleware"
 	"mvc/pkg/models"
 	"mvc/pkg/types"
@@ -17,6 +18,7 @@ func CheckRequest(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			renderErrorPage(w, err.Error())
 		} else {
+			fmt.Println(data)
 			t := views.CheckRequestPage()
 			t.Execute(w, data)
 		}

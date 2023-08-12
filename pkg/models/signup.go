@@ -23,21 +23,18 @@ func SignUp(data types.SignupData) error {
 	} else if res.Next() {
 		return errors.New("username already exists")
 	} else {
-		if data.Password != data.CPassword {
-			return errors.New("passwords and confirmed passwords do not match")
+		pswd := []byte(data.Password)
+		hashedPassword, err := bcrypt.GenerateFromPassword(pswd, bcrypt.DefaultCost)
+		if err != nil {
+			return err
 		} else {
-			pswd := []byte(data.Password)
-			hashedPassword, err := bcrypt.GenerateFromPassword(pswd, bcrypt.DefaultCost)
+			insertion := "INSERT INTO users VALUES (?, ?, ?, ?)"
+			_, err := db.Exec(insertion, data.Username, data.Fullname, hashedPassword, data.IsAdmin)
 			if err != nil {
 				return err
-			} else {
-				insertion := "INSERT INTO users VALUES (?, ?, ?, ?)"
-				_, err := db.Exec(insertion, data.Username, data.Fullname, hashedPassword, data.IsAdmin)
-				if err != nil {
-					return err
-				}
-				return nil
 			}
+			return nil
 		}
+
 	}
 }

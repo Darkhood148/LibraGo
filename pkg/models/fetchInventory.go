@@ -18,17 +18,17 @@ func FetchInventory() (types.Inventory, error) {
 	var inv []types.BookInventory
 	for rows.Next() {
 		var inven types.BookInventory
-		err := rows.Scan(&inven.Bookid, &inven.Bookname, &inven.Author, &inven.CopiesAvailable)
+		err := rows.Scan(&inven.Book.Bookid, &inven.Book.Bookname, &inven.Book.Author, &inven.Book.Quantity)
 		if err != nil {
 			return types.Inventory{}, err
 		}
 		query := "SELECT COUNT(*) FROM checkouts WHERE ofBook = (?) AND status != \"pending\""
 		var temp int
-		err = db.QueryRow(query, inven.Bookid).Scan(&temp)
+		err = db.QueryRow(query, inven.Book.Bookid).Scan(&temp)
 		if err != nil {
 			return types.Inventory{}, err
 		}
-		inven.TotalCopies = inven.CopiesAvailable + temp
+		inven.TotalCopies = inven.Book.Quantity + temp
 		inv = append(inv, inven)
 	}
 	var invent types.Inventory

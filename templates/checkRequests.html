@@ -27,52 +27,54 @@
     </div>
     <h1 id="main">List of Requests</h1>
     {{ if ne (len .Reqs) 0 }}
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Checkout-ID</th>
-          <th>Book Name</th>
-          <th>Issued By</th>
-          <th>Status</th>
-          <th>A1</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .Reqs}}
-        <tr>
-          <td>{{.Checkoutid}}</td>
-          <td>{{.OfBook}}</td>
-          <td>{{.ByUser}}</td>
-          <td>{{.Status}}</td>
-          <td>
-            <form action="/checkRequest" method="POST">
-              <button
-                class="column"
-                type="submit"
-                name="actionInfo"
-                value="{{.Checkoutid}}-a"
-              >
-                {{if eq .Status `pending`}} Approve Checkout {{else}} Approve
-                Checkin {{end}}
-              </button>
-              <button
-                class="column"
-                type="submit"
-                name="actionInfo"
-                value="{{.Checkoutid}}-d"
-              >
-                {{if eq .Status `pending`}} Deny Checkout {{else}} Deny Checkin
-                {{end}}
-              </button>
-            </form>
-          </td>
-        </tr>
+    <div id="bruh">
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Checkout-ID</th>
+            <th>Book Name</th>
+            <th>Issued By</th>
+            <th>Status</th>
+            <th>A1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .Reqs}}
+          <tr>
+            <td>{{.Checkoutid}}</td>
+            <td>{{.OfBook}}</td>
+            <td>{{.ByUser}}</td>
+            <td>{{.Status}}</td>
+            <td>
+              <form action="/checkRequest" method="POST">
+                <button
+                  class="column"
+                  type="submit"
+                  name="actionInfo"
+                  value="{{.Checkoutid}}-a"
+                >
+                  {{if eq .Status `pending`}} Approve Checkout {{else}} Approve
+                  Checkin {{end}}
+                </button>
+                <button
+                  class="column"
+                  type="submit"
+                  name="actionInfo"
+                  value="{{.Checkoutid}}-d"
+                >
+                  {{if eq .Status `pending`}} Deny Checkout {{else}} Deny
+                  Checkin {{end}}
+                </button>
+              </form>
+            </td>
+          </tr>
 
-        {{end}}
-      </tbody>
-    </table>
-    {{else}}
-    <h3>None</h3>
-    {{end}}
+          {{end}}
+        </tbody>
+      </table>
+      {{else}}
+      <h3>None</h3>
+      {{end}}
+    </div>
   </body>
 </html>
