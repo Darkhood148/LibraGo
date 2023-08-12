@@ -10,12 +10,12 @@ mysql -u "$sqlUsername" -p"$dbPassword" -e "CREATE DATABASE IF NOT EXISTS $DB_NA
 
 migrate -path ../database/migration/ -database "mysql://${sqlUsername}:${dbPassword}@tcp(localhost:3306)/${DB_NAME}" -verbose up
 
-read -p "Enter admin password" adminPassword
+read -p "Enter admin password: " adminPassword
 
 cat <<EOF > ../config.yaml
-DB_USERNAME: $sqlUsername
-DB_PASSWORD: $dbPassword
+DB_USERNAME: "$sqlUsername"
+DB_PASSWORD: "$dbPassword"
 DB_HOST: "127.0.0.1:3306"
 DB_NAME: "librago"
-JWT_SECRET: $adminPassword
+JWT_SECRET: "$adminPassword"
 EOF
