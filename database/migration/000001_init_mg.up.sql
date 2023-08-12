@@ -1,4 +1,4 @@
-CREATE DATABASE librago;
+CREATE DATABASE librago IF NOT EXISTS librago;
 USE librago;
 
 CREATE TABLE users (
