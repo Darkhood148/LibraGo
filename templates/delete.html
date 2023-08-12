@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>LibraGo</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="../static/css/delete.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.onload = function () {
+        const status = "{{ .Status }}";
+        if (status == "1") {
+          alert("Successful");
+        } else if (status == "2") {
+          const message = "{{ .ErrMessage }}";
+          alert(`Error Occured: ${message}`);
+        }
+      };
+    </script>
   </head>
   <body>
+    <div id="navbar" class="container-fluid">
+      <div id="lg"><a href="/">LibraGo</a></div>
+      <div id="prof"><a href="/profile">Profile</a></div>
+    </div>
     <div id="box">
       <h1>Delete Book</h1>
       <div class="container mt-3">
         <form action="/delete" method="POST">
           <div class="form-group">
             <label for="bookid">Bookid</label>
-            <input type="text" class="form-control" id="bookid" name="bookid" placeholder="Enter bookid">
+            <input
+              type="text"
+              class="form-control"
+              id="bookid"
+              name="bookid"
+              placeholder="Enter bookid"
+            />
           </div>
           <button type="submit" class="btn btn-primary mb-3">Submit</button>
         </form>

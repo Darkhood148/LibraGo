@@ -34,6 +34,8 @@ func Start() {
 	r.HandleFunc("/returnBook", controller.ReturnBookPost).Methods("POST")
 	r.HandleFunc("/returnDeniedBook", controller.ReturnDeniedBookPost).Methods("POST")
 	r.HandleFunc("/logout", controller.Logout).Methods("GET")
+	r.HandleFunc("/requestAdmin", controller.GetAdminAccess).Methods("GET")
+	r.HandleFunc("/requestAdmin", controller.GetAdminAccessPost).Methods("POST")
 
 	http.ListenAndServe(":8000", r)
 }

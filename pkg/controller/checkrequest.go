@@ -15,13 +15,13 @@ func CheckRequest(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Admin {
 		data, err := models.FetchRequests()
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderErrorPage(w, err.Error())
 		} else {
 			t := views.CheckRequestPage()
 			t.Execute(w, data)
 		}
 	} else {
-		w.Write([]byte(types.NotAdmin))
+		renderInvalidPage(w, string(types.NotAdmin))
 	}
 }
 
@@ -35,21 +35,21 @@ func CheckRequestPost(w http.ResponseWriter, r *http.Request) {
 		} else if words[1] == "d" {
 			status = "denied"
 		} else {
-			w.Write([]byte("Invalid Request"))
+			renderErrorPage(w, "Invalid Request")
 			panic(errors.New("wrong input"))
 		}
 		checkoutid, err := strconv.Atoi(words[0])
 		if err != nil {
-			w.Write([]byte("Error Occured while parsing input"))
+			renderErrorPage(w, "Error occured while parsing input")
 		} else {
 			err := models.CheckRequest(checkoutid, status)
 			if err != nil {
-				w.Write([]byte(err.Error()))
+				renderErrorPage(w, err.Error())
 			} else {
-				w.Write([]byte(types.Success))
+				http.Redirect(w, r, "/checkRequest", http.StatusSeeOther)
 			}
 		}
 	} else {
-		w.Write([]byte(types.NotAdmin))
+		renderInvalidPage(w, string(types.NotAdmin))
 	}
 }

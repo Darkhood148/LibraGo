@@ -12,8 +12,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) != types.Unverified {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	} else {
-		t := views.LoginPage()
-		t.Execute(w, nil)
+		renderLoginPage(w, "0", "")
 	}
 }
 
@@ -25,7 +24,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		}
 		cookie, err := models.Login(data)
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderLoginPage(w, "2", err.Error())
 		} else {
 			http.SetCookie(w, &cookie)
 			http.Redirect(w, r, "/profile", http.StatusSeeOther)
@@ -33,4 +32,13 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
+}
+
+func renderLoginPage(w http.ResponseWriter, status string, errMess string) {
+	t := views.LoginPage()
+	info := types.ErrorInfo{
+		Status:     status,
+		ErrMessage: errMess,
+	}
+	t.Execute(w, info)
 }

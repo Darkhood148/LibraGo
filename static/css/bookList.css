@@ -1,3 +1,41 @@
 table {
-    width: 40vw;
+  width: 40vw;
+  position: absolute;
+  top: 20vh;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+#main {
+  position: absolute;
+  top: 10vh;
+}
+#navbar {
+  margin-top: 0;
+  margin-bottom: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  position: fixed;
+
+  background-color: black;
+  color: white;
+
+  height: 10vh;
+
+  font-family: "Lumanosimo", cursive;
+}
+#lg {
+  position: absolute;
+  left: 3%;
+}
+
+#prof {
+  position: absolute;
+  right: 2%;
 }

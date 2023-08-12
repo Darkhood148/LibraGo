@@ -10,8 +10,7 @@ import (
 
 func Signup(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Unverified {
-		t := views.SignUpPage()
-		t.Execute(w, nil)
+		renderSignupPage(w, "0", "")
 	} else {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
@@ -28,11 +27,20 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 		}
 		err := models.SignUp(data)
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderSignupPage(w, "2", err.Error())
 		} else {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		}
 	} else {
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
+}
+
+func renderSignupPage(w http.ResponseWriter, status string, errMess string) {
+	t := views.SignUpPage()
+	info := types.ErrorInfo{
+		Status:     status,
+		ErrMessage: errMess,
+	}
+	t.Execute(w, info)
 }

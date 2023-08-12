@@ -6,6 +6,17 @@
     <title>LibraGo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/signup.css" />
+    <script>
+      window.onload = function () {
+        const status = "{{ .Status }}";
+        if (status == "1") {
+          alert("Successful");
+        } else if (status == "2") {
+          const message = "{{ .ErrMessage }}"
+          alert(`Error Occured: ${message}`)
+        }
+      };
+    </script>
   </head>
   <body>
     <div id="box">

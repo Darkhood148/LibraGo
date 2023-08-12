@@ -10,13 +10,23 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../static/css/profile.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="navbar" class="container-fluid">
     <div id="name">Hi {{.Username}}</div>
     <div id="actions">
       <div>
-        <a href="/viewBookList"> Book List </a>
+        <a href="/bookList"> Book List </a>
       </div>
       <div>
         <a href="/issueBook"> Issue Book </a>

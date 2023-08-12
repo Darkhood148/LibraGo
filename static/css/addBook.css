@@ -1,5 +1,13 @@
 * {
-    margin: 0;
+  margin: 0;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: white;
+  text-decoration: none;
 }
 body {
   background-image: url("../images/signupbg.jpg");
@@ -25,12 +33,45 @@ body {
   height: 50vh;
   width: 30vw;
 }
-.container {
-    overflow: auto;
+#successMessage {
+  position: absolute;
+  transform: translateX(-50%);
+  top: 0;
+  left: 50%;
 }
-@media screen and (orientation:portrait) { 
-    #box{
-      width: 100vw;
-      left: 0;
-    }
+#errorMessage {
+  position: absolute;
+  transform: translateX(-50%);
+  top: 0;
+  left: 50%;
+}
+.container {
+  overflow: auto;
+}
+@media screen and (orientation: portrait) {
+  #box {
+    width: 100vw;
+    left: 0;
   }
+}
+#navbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+
+  background-color: black;
+  color: white;
+
+  height: 10vh;
+
+  font-family: "Lumanosimo", cursive;
+}
+#lg {
+  position: absolute;
+  left: 3%;
+}
+
+#prof {
+  position: absolute;
+  right: 2%;
+}

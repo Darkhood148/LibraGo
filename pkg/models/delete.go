@@ -8,7 +8,7 @@ func DeleteBook(data int) error {
 		return err
 	} else {
 		defer db.Close()
-		query := "SELECT * FROM books WHERE ofBook = (?)"
+		query := "SELECT * FROM checkouts WHERE ofBook = (?)"
 		res, err := db.Query(query, data)
 		if err != nil {
 			return err

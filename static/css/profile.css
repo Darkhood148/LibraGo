@@ -9,10 +9,6 @@ a {
   align-items: center;
 }
 
-a:hover {
-  color: black;
-}
-
 #navbar {
   display: flex;
   align-items: center;
@@ -45,6 +41,9 @@ a:hover {
 
 #navbar div div:hover {
   background-color: white;
+}
+
+#navbar div div:hover a {
   color: black;
 }
 

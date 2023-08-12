@@ -96,3 +96,8 @@ const ( //Some standard error messages
 	NotClient   Response = "You need to be a client to access this"
 	Success     Response = "Successful"
 )
+
+type ErrorInfo struct {
+	Status     string `json:"status"`
+	ErrMessage string `json:"errorMessage"`
+}

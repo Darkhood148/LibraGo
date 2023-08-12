@@ -12,11 +12,11 @@ func ReturnBookPost(w http.ResponseWriter, r *http.Request) {
 		data := r.FormValue("actionInfo")
 		err := models.ReturnBook(data)
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderErrorPage(w, err.Error())
 		} else {
-			w.Write([]byte(types.Success))
+			http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		}
 	} else {
-		w.Write([]byte(types.NotClient))
+		renderInvalidPage(w, string(types.NotClient))
 	}
 }

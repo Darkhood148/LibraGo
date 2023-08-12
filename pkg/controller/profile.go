@@ -15,7 +15,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		usereq, err2 := models.FetchUserReqs(uname)
 		penreq, err3 := models.FetchPendingReqs(uname)
 		if err1 != nil || err2 != nil || err3 != nil {
-			w.Write([]byte("Error Occured occured while fetching requests"))
+			renderErrorPage(w, "Error Occured occured while fetching requests")
 		} else {
 			t := views.ProfilePage(false)
 			info := types.ProfileInfo{
@@ -30,7 +30,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		uname := middleware.VerifyJWT(w, r)
 		inventory, err := models.FetchInventory()
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderErrorPage(w, err.Error())
 		} else {
 			t := views.ProfilePage(true)
 			info := types.ProfileAdminInfo{
@@ -40,6 +40,6 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			t.Execute(w, info)
 		}
 	} else {
-		w.Write([]byte(types.NotLoggedIn))
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }

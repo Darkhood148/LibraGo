@@ -11,10 +11,9 @@ import (
 
 func IssueBook(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
-		t := views.IssueBookPage()
-		t.Execute(w, nil)
+		renderIssuePage(w, "0", "")
 	} else {
-		w.Write([]byte(types.NotLoggedIn))
+		renderInvalidPage(w, string(types.NotClient))
 	}
 }
 
@@ -22,7 +21,7 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
 		val, err := strconv.Atoi(r.FormValue("bookid"))
 		if err != nil {
-			w.Write([]byte("Error Occured while parsing input values"))
+			renderIssuePage(w, "2", err.Error())
 		} else {
 			data := types.IssueBookData{
 				Bookid:   val,
@@ -30,12 +29,21 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 			}
 			err := models.IssueBook(data)
 			if err != nil {
-				w.Write([]byte(err.Error()))
+				renderIssuePage(w, "2", err.Error())
 			} else {
-				w.Write([]byte(types.Success))
+				renderIssuePage(w, "1", "")
 			}
 		}
 	} else {
-		w.Write([]byte(types.NotClient))
+		renderInvalidPage(w, string(types.NotClient))
 	}
+}
+
+func renderIssuePage(w http.ResponseWriter, status string, errMess string) {
+	t := views.IssueBookPage()
+	info := types.ErrorInfo{
+		Status:     status,
+		ErrMessage: errMess,
+	}
+	t.Execute(w, info)
 }

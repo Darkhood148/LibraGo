@@ -8,10 +8,24 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="/static/css/bookList.css" />
+    <link rel="stylesheet" href="/static/css/checkRequests.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lumanosimo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>List of Requests</h1>
+    <div id="navbar" class="container-fluid">
+      <div id="lg"><a href="/">LibraGo</a></div>
+      <div id="prof"><a href="/profile">Profile</a></div>
+    </div>
+    <h1 id="main">List of Requests</h1>
     {{ if ne (len .Reqs) 0 }}
     <table border="1">
       <thead>

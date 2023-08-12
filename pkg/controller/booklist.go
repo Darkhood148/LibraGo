@@ -12,12 +12,12 @@ func BookList(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
 		data, err := models.FetchBooks()
 		if err != nil {
-			w.Write([]byte(err.Error()))
+			renderErrorPage(w, err.Error())
 		} else {
 			t := views.BookListPage()
 			t.Execute(w, data)
 		}
 	} else {
-		w.Write([]byte(types.NotClient))
+		renderInvalidPage(w, string(types.NotClient))
 	}
 }
