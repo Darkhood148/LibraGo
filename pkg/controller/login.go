@@ -35,7 +35,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderLoginPage(w http.ResponseWriter, status string, errMess string) {
-	t := views.LoginPage()
+	t := views.RenderPage("login.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

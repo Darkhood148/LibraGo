@@ -12,7 +12,7 @@ func IssueBook(data types.IssueBookData) error {
 		return err
 	}
 	defer db.Close()
-	query := "SELECT copiesAvailable FROM books WHERE bookid = (?)"
+	query := "SELECT copiesAvailable FROM books WHERE bookID = (?)"
 	res, err := db.Query(query, data.Bookid)
 	if err != nil {
 		return err

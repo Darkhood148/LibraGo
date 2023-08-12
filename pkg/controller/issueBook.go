@@ -40,7 +40,7 @@ func IssueBookPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderIssuePage(w http.ResponseWriter, status string, errMess string) {
-	t := views.IssueBookPage()
+	t := views.RenderPage("issueBook.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

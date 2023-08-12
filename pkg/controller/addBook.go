@@ -43,7 +43,7 @@ func AddBookPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderAddPage(w http.ResponseWriter, status string, errMess string) {
-	t := views.AddBookPage()
+	t := views.RenderPage("addBook.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

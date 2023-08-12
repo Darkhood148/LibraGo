@@ -8,17 +8,17 @@ CREATE TABLE users (
     isAdmin BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE books (
-    bookid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    bookID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     author VARCHAR(255),
     copiesAvailable SMALLINT UNSIGNED
 );
 CREATE TABLE checkouts (
-    checkoutid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    checkoutID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ofBook INT UNSIGNED,
     byUser VARCHAR(255),
     status ENUM('pending', 'issued', 'checkinDenied', 'checkinPending'),
     issueTime DATETIME,
-    FOREIGN KEY (ofBook) REFERENCES books(bookid),
+    FOREIGN KEY (ofBook) REFERENCES books(bookID),
     FOREIGN KEY (byUser) REFERENCES users(username)
 );

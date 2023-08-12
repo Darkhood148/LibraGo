@@ -18,11 +18,11 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Unverified {
-		if r.FormValue("pswd") == r.FormValue("cpswd") {
+		if r.FormValue("password") == r.FormValue("confirmPassword") {
 			data := types.SignupData{
-				Fullname: r.FormValue("fullname"),
+				Fullname: r.FormValue("fullName"),
 				Username: r.FormValue("username"),
-				Password: r.FormValue("pswd"),
+				Password: r.FormValue("password"),
 				IsAdmin:  types.Client,
 			}
 			err := models.SignUp(data)
@@ -40,7 +40,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderSignupPage(w http.ResponseWriter, status string, errMess string) {
-	t := views.SignUpPage()
+	t := views.RenderPage("signup.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

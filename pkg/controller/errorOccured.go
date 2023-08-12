@@ -10,7 +10,7 @@ type err struct {
 }
 
 func renderErrorPage(w http.ResponseWriter, reason string) {
-	t := views.ErrorPage()
+	t := views.RenderPage("err404.html")
 	info := err{
 		Reason: reason,
 	}

@@ -15,7 +15,7 @@ func DeleteBook(data int) error {
 		} else if res.Next() {
 			return errors.New("book has been lent out and hence cannot be removed")
 		}
-		query = "DELETE FROM books WHERE bookid = (?)"
+		query = "DELETE FROM books WHERE bookID = (?)"
 		_, err = db.Exec(query, data)
 		if err != nil {
 			return err

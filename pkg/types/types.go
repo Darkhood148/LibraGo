@@ -15,8 +15,8 @@ type LoginData struct {
 }
 
 type BookInventory struct {
-	Book        Book `json:"bookinfo"`
-	TotalCopies int  `json:"totcopies"`
+	Book        Book `json:"book_info"`
+	TotalCopies int  `json:"total_copies"`
 }
 
 type Inventory struct {
@@ -30,9 +30,9 @@ type ProfileAdminInfo struct {
 
 type ProfileInfo struct {
 	Username    string        `json:"username"`
-	PendingReqs CheckRequests `json:"pendingreqs"`
-	CheckReqs   CheckRequests `json:"checkreq"`
-	DeniedReqs  CheckRequests `json:"deniedreq"`
+	PendingReqs CheckRequests `json:"pending_requests"`
+	CheckReqs   CheckRequests `json:"check_requests"`
+	DeniedReqs  CheckRequests `json:"denied_requests"`
 	Fine        int           `json:"fine"`
 }
 
@@ -63,16 +63,16 @@ type CheckRequest struct {
 	OfBook     int       `json:"bookid"`
 	ByUser     string    `json:"username"`
 	Status     string    `json:"status"`
-	IssueTime  time.Time `json:"issueTime"`
+	IssueTime  time.Time `json:"issue_time"`
 	Fine       int       `json:"fine"`
 }
 
 type CheckRequests struct {
-	Reqs []CheckRequest `json:"reqs"`
+	Reqs []CheckRequest `json:"requests"`
 }
 
 type ActionData struct {
-	CheckReq CheckRequest `json:"checkrequest"`
+	CheckReq CheckRequest `json:"check_request"`
 	Action   string       `json:"action"`
 }
 

@@ -19,17 +19,17 @@ func Sas(w http.ResponseWriter, r *http.Request) {
 
 func SasPost(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Admin {
-		val1, err1 := strconv.Atoi(r.FormValue("bookid"))
-		val2, err2 := strconv.Atoi(r.FormValue("quantity"))
+		bookid, err1 := strconv.Atoi(r.FormValue("bookid"))
+		quantity, err2 := strconv.Atoi(r.FormValue("quantity"))
 		if err1 != nil || err2 != nil {
 			renderSasPage(w, "2", "Error occured while parsing input values")
-		} else if val2 <= 0 || val1 <= 0 {
+		} else if quantity <= 0 || bookid <= 0 {
 			renderSasPage(w, "2", "Please enter input values")
 		} else {
 			data := types.SasData{
-				Bookid:   val1,
+				Bookid:   bookid,
 				Option:   r.FormValue("options"),
-				Quantity: val2,
+				Quantity: quantity,
 			}
 			err := models.Sas(data)
 			if err != nil {
@@ -44,7 +44,7 @@ func SasPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderSasPage(w http.ResponseWriter, status string, errMess string) {
-	t := views.SasPage()
+	t := views.RenderPage("sas.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

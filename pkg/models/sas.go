@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"mvc/pkg/types"
 )
 
@@ -12,28 +11,27 @@ func Sas(data types.SasData) error {
 		return err
 	}
 	defer db.Close()
-	var query string
+	var updateQuery string
 	if data.Option == "ADD" {
-		query = "UPDATE books SET copiesAvailable = copiesAvailable + (?) WHERE bookid = (?)"
+		updateQuery = "UPDATE books SET copiesAvailable = copiesAvailable + (?) WHERE bookID = (?)"
 	} else if data.Option == "SUBTRACT" {
-		query2 := "SELECT copiesAvailable FROM books WHERE bookid = (?)"
-		res, err := db.Query(query2, data.Bookid)
+		selectQuery := "SELECT copiesAvailable FROM books WHERE bookID = (?)"
+		res, err := db.Query(selectQuery, data.Bookid)
 		if err != nil {
 			return err
 		}
-		var temp int
+		var copiesAvailable int
 		res.Next()
-		res.Scan(&temp)
-		if temp > data.Quantity {
-			query = "UPDATE books SET copiesAvailable = copiesAvailable - (?) WHERE bookid = (?)"
+		res.Scan(&copiesAvailable)
+		if copiesAvailable > data.Quantity {
+			updateQuery = "UPDATE books SET copiesAvailable = copiesAvailable - (?) WHERE bookID = (?)"
 		} else {
 			return errors.New("cannot remove more copies than exist")
 		}
 	} else {
-		query = "UPDATE books SET copiesAvailable = (?) WHERE bookid = (?)"
+		updateQuery = "UPDATE books SET copiesAvailable = (?) WHERE bookID = (?)"
 	}
-	_, err = db.Exec(query, data.Quantity, data.Bookid)
-	fmt.Println(query)
+	_, err = db.Exec(updateQuery, data.Quantity, data.Bookid)
 	if err != nil {
 		return err
 	}

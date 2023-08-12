@@ -12,7 +12,7 @@ type Data struct {
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	t := views.StartPage()
+	t := views.RenderPage("home.html")
 	var data Data
 	if middleware.TypeOfUser(w, r) == types.Unverified {
 		data.Status = false

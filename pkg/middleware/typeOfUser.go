@@ -6,9 +6,9 @@ import (
 )
 
 func TypeOfUser(w http.ResponseWriter, r *http.Request) types.User {
-	uname := VerifyJWT(w, r)
-	if uname != "" {
-		if VerifyAdmin(uname) {
+	username := VerifyJWT(w, r)
+	if username != "" {
+		if VerifyAdmin(username) {
 			return types.Admin
 		} else {
 			return types.Client

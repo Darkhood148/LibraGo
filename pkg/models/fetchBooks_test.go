@@ -17,7 +17,7 @@ func TestGetCheckinDeniedCheckouts(t *testing.T) {
 	defer db.Close()
 
 	// Define the expected rows for the query
-	rows := sqlmock.NewRows([]string{"bookid", "bookname", "author", "copiesAvailable"}).
+	rows := sqlmock.NewRows([]string{"bookID", "bookname", "author", "copiesAvailable"}).
 		AddRow(1, "a", "A", 4).
 		AddRow(2, "b", "B", 0).
 		AddRow(3, "c", "C", 12).

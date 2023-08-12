@@ -36,7 +36,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderDeletePage(w http.ResponseWriter, status string, errMess string) {
-	t := views.DeleteBookPage()
+	t := views.RenderPage("delete.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

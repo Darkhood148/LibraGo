@@ -10,7 +10,7 @@ type data struct {
 }
 
 func renderInvalidPage(w http.ResponseWriter, reason string) {
-	t := views.InvalidPage()
+	t := views.RenderPage("invalidAccess.html")
 	info := data{
 		Reason: reason,
 	}

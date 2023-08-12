@@ -10,31 +10,31 @@ import (
 
 func Profile(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
-		uname := middleware.VerifyJWT(w, r)
-		denreq, err1 := models.FetchDeniedReqs(uname)
-		usereq, err2 := models.FetchUserReqs(uname)
-		penreq, err3 := models.FetchPendingReqs(uname)
+		username := middleware.VerifyJWT(w, r)
+		deniedRequests, err1 := models.FetchDeniedReqs(username)
+		issuedBooks, err2 := models.FetchUserReqs(username)
+		pendingRequests, err3 := models.FetchPendingReqs(username)
 		if err1 != nil || err2 != nil || err3 != nil {
 			renderErrorPage(w, "Error Occured occured while fetching requests")
 		} else {
-			t := views.ProfilePage(false)
+			t := views.RenderPage("profile.html")
 			info := types.ProfileInfo{
-				Username:    uname,
-				CheckReqs:   usereq,
-				DeniedReqs:  denreq,
-				PendingReqs: penreq,
+				Username:    username,
+				CheckReqs:   issuedBooks,
+				DeniedReqs:  deniedRequests,
+				PendingReqs: pendingRequests,
 			}
 			t.Execute(w, info)
 		}
 	} else if middleware.TypeOfUser(w, r) == types.Admin {
-		uname := middleware.VerifyJWT(w, r)
+		username := middleware.VerifyJWT(w, r)
 		inventory, err := models.FetchInventory()
 		if err != nil {
 			renderErrorPage(w, err.Error())
 		} else {
-			t := views.ProfilePage(true)
+			t := views.RenderPage("profileAdmin.html")
 			info := types.ProfileAdminInfo{
-				Username:  uname,
+				Username:  username,
 				Inventory: inventory,
 			}
 			t.Execute(w, info)

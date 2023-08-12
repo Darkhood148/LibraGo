@@ -38,7 +38,7 @@ func GetAdminAccessPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderAdReqPage(w http.ResponseWriter, status string, errMess string) {
-	t := views.RequestAdminPage()
+	t := views.RenderPage("requestAdmin.html")
 	info := types.ErrorInfo{
 		Status:     status,
 		ErrMessage: errMess,

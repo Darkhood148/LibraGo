@@ -10,7 +10,7 @@ func CheckRequest(data int, status string) error {
 	if err != nil {
 		return err
 	}
-	query := "SELECT * FROM checkouts WHERE checkoutid = (?)"
+	query := "SELECT * FROM checkouts WHERE checkoutID = (?)"
 	res, err := db.Query(query, data)
 	if err != nil {
 		return err
@@ -25,12 +25,12 @@ func CheckRequest(data int, status string) error {
 		}
 		if resData.Status == "pending" {
 			if status == "approve" {
-				query := "UPDATE checkouts SET status = \"issued\" WHERE checkoutid = (?)"
+				query := "UPDATE checkouts SET status = \"issued\" WHERE checkoutID = (?)"
 				_, err := db.Exec(query, resData.Checkoutid)
 				if err != nil {
 					return err
 				}
-				query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookid = (?)"
+				query = "UPDATE books SET copiesAvailable = copiesAvailable - 1 WHERE bookID = (?)"
 				_, err = db.Exec(query, resData.OfBook)
 				if err != nil {
 					return err
@@ -52,7 +52,7 @@ func CheckRequest(data int, status string) error {
 				}
 				return nil
 			} else {
-				query := "DELETE FROM checkouts WHERE checkoutid = (?)"
+				query := "DELETE FROM checkouts WHERE checkoutID = (?)"
 				_, err := db.Exec(query, resData.Checkoutid)
 				if err != nil {
 					return err
@@ -61,19 +61,19 @@ func CheckRequest(data int, status string) error {
 			}
 		} else {
 			if status == "approve" {
-				query := "DELETE FROM checkouts WHERE checkoutid = (?)"
+				query := "DELETE FROM checkouts WHERE checkoutID = (?)"
 				_, err := db.Exec(query, resData.Checkoutid)
 				if err != nil {
 					return err
 				}
-				query = "UPDATE books SET copiesAvailable = copiesAvailable + 1 WHERE bookid = (?)"
+				query = "UPDATE books SET copiesAvailable = copiesAvailable + 1 WHERE bookID = (?)"
 				_, err = db.Exec(query, resData.OfBook)
 				if err != nil {
 					return err
 				}
 				return nil
 			} else {
-				query := "UPDATE checkouts SET status = \"checkinDenied\" WHERE checkoutid = (?)"
+				query := "UPDATE checkouts SET status = \"checkinDenied\" WHERE checkoutID = (?)"
 				_, err := db.Exec(query, resData.Checkoutid)
 				if err != nil {
 					return err
