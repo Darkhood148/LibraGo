@@ -21,4 +21,4 @@ CREATE TABLE checkouts (
     issueTime DATETIME,
     FOREIGN KEY (ofBook) REFERENCES books(bookid),
     FOREIGN KEY (byUser) REFERENCES users(username)
-    );
+);
