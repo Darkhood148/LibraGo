@@ -11,7 +11,7 @@ import (
 func BookList(w http.ResponseWriter, r *http.Request) {
 	if middleware.TypeOfUser(w, r) == types.Client {
 		db, err := models.Connection()
-		if err != nil {
+		if err == nil {
 			data, err := models.FetchBooks(db)
 			if err != nil {
 				renderErrorPage(w, err.Error())
