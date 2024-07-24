@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librago-deployment
+  labels:
+    app: librago
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: librago
+  template:
+    metadata:
+      labels:
+        app: librago
+    spec:
+      containers:
+        - name: librago
+          image: darkhood148/libratry:2.0
+          ports:
+            - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql-db
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: lmao
+            - name: MYSQL_USER
+              value: Darkhood148
+            - name: MYSQL_PASSWORD
+              value: letmein
+          ports:
+            - containerPort: 3306
